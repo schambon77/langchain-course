@@ -1,30 +1,26 @@
 from dotenv import load_dotenv
+from typing import List
+from pydantic import BaseModel, Field
 from langchain.tools import tool
 from langchain_core.messages import HumanMessage
 from langchain.agents import create_agent
 from langchain_anthropic import ChatAnthropic
-from tavily import TavilyClient
+from langchain_tavily import TavilySearch
 
 load_dotenv()
 
-tavily = TavilyClient()
+class Source(BaseModel):
+    """Source for search agent"""
+    url: str = Field(description="URL of the source")
 
-@tool
-def search(query: str) -> str:
-    """
-    Search a query and return the results as a string.
-    Args:
-        query (str): The search query.
-    Returns:
-        str: The search results.
-    """
-    print(f"Searching for: {query}")
-    return tavily.search(query=query)
+class AgentResponse(BaseModel):
+    """Response from the search agent"""
+    answer: str = Field(description="Answer from the agent")
+    sources: List[Source] = Field(description="List of sources found by the agent")
 
 llm = ChatAnthropic(model="claude-opus-4-8")
-tools = [search]
-agent = create_agent(model=llm, tools=tools)
-
+tools = [TavilySearch()]
+agent = create_agent(model=llm, tools=tools, response_format=AgentResponse)
 
 def main() -> None:
     print("Hello from langchain-course!")

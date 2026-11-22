@@ -1,0 +1,39 @@
+# Python & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Virtual Environments (uv & standard)
+.venv/
+venv/
+ENV/
+env/
+
+# Build & Distribution
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Environment Variables & Secrets (Crucial!)
+.env
+.env.*
+!.env.example
+
+# Testing & Linters
+.pytest_cache/
+.coverage
+htmlcov/
+.ruff_cache/
+.mypy_cache/
+
+# macOS System Files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# VS Code Settings (Optional: remove if you want to share team settings)
+.vscode/
